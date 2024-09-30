@@ -1,0 +1,23 @@
+### Read all movies
+GET http://localhost:3000/films
+
+### Read all movies with File variable
+@baseURL = http://localhost:3000/films
+GET {{baseURL}}
+
+### Read movie identified by 2
+GET {{baseURL}}/2
+
+### Read all movies with duration longer or equal to 134
+GET {{baseURL}}/?minimumDuration=134
+
+### Add new movie
+POST {{baseURL}}/
+Content-Type: application/json
+
+{
+    "title": "Inception",
+    "director": "Christopher Nolan",
+    "duration": 148,
+    "budget": 16000000
+}

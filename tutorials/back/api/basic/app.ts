@@ -4,7 +4,6 @@ import { ErrorRequestHandler } from "express";
 import usersRouter from "./routes/users";
 import pizzaRouter from "./routes/pizzas";
 import drinkRouter from "./routes/drinks";
-import filmRouter from "./routes/films";
 
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     console.error(err.stack);
@@ -19,6 +18,5 @@ app.use(errorHandler);
 app.use("/users", usersRouter);
 app.use("/pizzas", pizzaRouter);
 app.use("/drinks", drinkRouter);
-app.use("/films", filmRouter);
 
 export default app;

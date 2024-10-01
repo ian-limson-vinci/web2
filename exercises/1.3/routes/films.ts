@@ -53,6 +53,10 @@ router.get("/:id", (_req, res) => {
   return res.json(film);
 });
 
+router.get("/sorted", (req, res) => {
+  
+})
+
 router.post("/", (req,res) => {
   const body: unknown = req.body;
   if (

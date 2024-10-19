@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Film } from "../types";
+import { Film, NewFilm } from "../types";
 
 const films: Film[] = [
   {
@@ -142,5 +142,118 @@ router.post("/", (req,res) => {
   films.push(newFilm);
   return res.json(newFilm);
 });
+
+router.delete("/:id", (req,res) => {
+  const id = Number(req.params.id);
+  const index = films.findIndex((film) => film.id === id);
+  if (index === -1) {
+    return res.sendStatus(400);
+  }
+  const deletedElements = films.splice(index, 1);
+  return res.json(deletedElements[0]);
+})
+
+router.patch("/:id", (req,res) => {
+  const id = Number(req.params.id);
+  const film = films.find((film) => film.id === id);
+  if (!film) {
+    console.log("2");
+    return res.sendStatus(400);
+  }
+
+  const body: unknown = req.body
+
+  if (
+    !body ||
+    typeof body !== "object" ||
+    ("title" in body && (typeof body.title !== "string" || !body.title.trim())) ||
+    ("director" in body && (typeof body.director !== "string" || !body.director.trim())) ||
+    ("duration" in body && (typeof body.duration !== "number" || body.duration <=0)) ||
+    ("imageUrl" in body && (typeof body.imageUrl !== "string" || !body.imageUrl.trim())) ||
+    ("description" in body && (typeof body.description !== "string" || !body.description.trim())) ||
+    ("budget" in body && (typeof body.budget !== "number" || body.budget <=0)) 
+  ) {
+    console.log("1");
+    return res.sendStatus(400);
+  }
+
+
+  const { title, director, duration, imageUrl, description, budget } : Partial<NewFilm> = body;
+
+  if (title) {
+    film.title = title;
+  }
+  if (director) {
+    film.director = director;
+  }
+  if (duration) {
+    film.duration = duration;
+  }
+  if (imageUrl) {
+    film.imageUrl = imageUrl;
+  }
+  if (description) {
+    film.description = description;
+  }
+  if (budget) {
+    film.budget = budget;
+  }
+
+  return res.json(film);
+
+})
+
+router.put("/:id", (req,res) => {
+  
+  const body: unknown = req.body;
+  
+  if (
+    !body ||
+    typeof body !== "object" ||
+    !("title" in body) ||
+    !("director" in body) ||
+    !("duration" in body) ||
+    typeof body.title !== "string" ||
+    typeof body.director !== "string" ||
+    typeof body.duration !== "number" ||
+    !body.title.trim() ||
+    !body.director.trim() ||
+    body.duration <= 0 ||
+    ("budget" in body &&
+      (typeof body.budget !== "number" || body.budget <= 0)) ||
+    ("description" in body &&
+      (typeof body.description !== "string" || !body.description.trim())) ||
+    ("imageUrl" in body &&
+      (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
+  ) {
+    return res.sendStatus(400);
+  }
+
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    return res.sendStatus(400);
+  }
+
+  const index = films.findIndex((film) => film.id === id);
+
+  if (index < 0) {
+    const newFilm = body as NewFilm;
+
+    const nextId = films.reduce((acc, film) => (film.id > acc ? film.id : acc), 0) + 1;
+
+    const addedFilm = { id: nextId, ...newFilm };
+
+    films.push(addedFilm);
+
+    return res.json(addedFilm);
+  }
+
+  const updatedFilm = {...films[index], ...body} as Film;
+
+  films[index] = updatedFilm;
+
+  return res.json(updatedFilm);
+})
 
 export default router;

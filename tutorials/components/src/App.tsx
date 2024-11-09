@@ -1,13 +1,12 @@
-import sound from "./assets/sounds/Infecticide-11-Pizza-Spinoza.mp3"
-import logo from "./assets/images/js-logo.png";
-import pizzaBackground from "./assets/images/pizza.jpg";
 
 import "./App.css";
+import sound from "./assets/sounds/Infecticide-11-Pizza-Spinoza.mp3";
+import logo from "./assets/images/js-logo.png";
 
 function App() {
   return (
     <div className="page">
-      <Header title="We love Pizza" version={0+1} />
+      <Header title="We love Pizza" version={0 + 1} />
       <Main />
       <Footer />
     </div>
@@ -16,7 +15,7 @@ function App() {
 
 interface HeaderProps {
   title: string;
-  version:number;
+  version: number;
 }
 
 const Header = (props: HeaderProps) => {

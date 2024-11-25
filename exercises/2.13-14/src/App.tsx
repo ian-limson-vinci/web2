@@ -8,8 +8,7 @@ function App() {
   const [jokeCategory, setJokeCategory] = useState("");
   const [jokeText, setJokeText] = useState("");
 
-  useEffect(() => {
-    console.log("a");
+  const fetchJoke = () => {
     fetch("https://v2.jokeapi.dev/joke/Any?type=single")
       .then((response) => {
         if (!response.ok)
@@ -25,7 +24,12 @@ function App() {
       .catch((err) => {
         console.error("Error: ", err);
       });
-  }, []);
+    };
+
+  useEffect(() => {
+    fetchJoke();
+    setInterval(fetchJoke, 10000);
+  }, [])
 
   return (
     <>
